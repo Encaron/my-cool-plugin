@@ -1,0 +1,132 @@
+{
+  // ─────────────────────────────────────────────────────────────────────────
+  //  便签板（My Cool Plugin）——LinkDesk 插件清单
+  //
+  //  双表面插件：
+  //    ① 图标栏图标（appearsIn.iconBar）→ 点击打开侧栏容器 my-cool-plugin-sidebar
+  //    ② 主区标签页（entry）——侧栏里点「在标签页中打开」经 tabs.openOrFocus 打开
+  //  两侧表面状态同步：pluginState 单键 board + onChange 广播（见 src/board.ts 头注释）。
+  //
+  //  本文件是 JSONC：可写注释、可尾逗号（LinkDesk 与 SDK 都按 jsonc 解析，对标 VS Code package.json）。
+  //  完整字段以 plugin.schema.json 为准——VS Code 读 $schema 自动补全 + 校验。
+  // ─────────────────────────────────────────────────────────────────────────
+  "$schema": "./node_modules/@linkdesk/plugin-sdk/schemas/plugin.schema.json",
+
+  // ── 插件身份 ──
+  "pluginId": "my-cool-plugin", // 全局唯一 ID（kebab-case）——安装目录 / 寻址 / 命令前缀都按它
+  "name": "My Cool Plugin", // 显示名——标签页 / 插件详情等 UI 出现处
+  "version": "0.1.1", // 语义化版本 x.y.z——发布更新比较靠它，改了要 +1
+  "description": "便签板——侧栏列表 + 主区标签页双表面，用 @linkdesk/ui 控件与 window.linkdesk.* API 搭的便签应用。",
+  "author": "fengyili",
+  "icon": "resources/icon.svg", // 相对插件根的 SVG，fill="currentColor" 自动跟随主题
+
+  // ── 入口 —— 标签页渲染 src/index.tsx 的 default 导出 ──
+  "entry": "src/index.tsx",
+
+  // ── 出现位置 ──
+  "appearsIn": {
+    "iconBar": "top", // 图标栏上部出现（opt-IN——不写就没有图标）
+    "sidePanel": true, // 图标点击打开侧栏（不是标签页）
+    "tabBar": true, // 允许作为主区标签页打开（经 tabs.openOrFocus）
+  },
+  "tabBehavior": { "singleton": true }, // 全局只开一个实例，避免重复标签
+
+  // ── 贡献点 ──
+  "contributes": {
+    // 自带翻译：key = 中文原文（原始文案即中文）→ 英文映射。无需 zh.json——中文 key 自带兜底。
+    "i18n": { "en": "i18n/en.json" },
+
+    // 命令——命令面板 + 右键菜单的共同来源（执行本体在池侧 registerCommand 注册）
+    "commands": [
+      { "id": "my-cool-plugin.newNote", "title": "新建便签", "category": "便签板" },
+      { "id": "my-cool-plugin.openInTab", "title": "在标签页中打开便签板", "category": "便签板" },
+      { "id": "my-cool-plugin.renameNote", "title": "重命名便签", "category": "便签板" },
+      { "id": "my-cool-plugin.deleteNote", "title": "删除便签", "category": "便签板" },
+      { "id": "my-cool-plugin.clearDone", "title": "清理已完成便签", "category": "便签板" },
+      { "id": "my-cool-plugin.quickNote", "title": "快捷新建便签", "category": "便签板" },
+    ],
+
+    // ⌨ 双段（chord）快捷键——本插件的 keybindings 接入点样本。
+    // 两段都要按：先 ctrl+k，松开，再按 ctrl+q（2 秒内；超时由壳的状态栏提示取消）。
+    // 🔴 选这个键位不是因为顺手，是因为**只有 `ctrl+k ctrl+<字母≥k>` 这一形状能活下来**：
+    //    壳的 normalizeKey() 对**整串**按 "+" 切分再排序，双段串会被打乱——
+    //    实测 `ctrl+k ctrl+t` / `ctrl+k ctrl+l`（两条既有 chord）侥幸不变，
+    //    而 `ctrl+k ctrl+h` → `ctrl+h+k ctrl`、`ctrl+k ctrl+shift+p` → `ctrl+shift+k ctrl+p`
+    //    ——注册进去的键位与按下时拼出的键位对不上 ⇒ **静默死键**。
+    //    （`alt+k alt+q`、`ctrl+shift+k ctrl+q` 也实测能活，但都用的是同一类巧合。）
+    "keybindings": [{ "command": "my-cool-plugin.quickNote", "key": "ctrl+k ctrl+q" }],
+
+    // 自定义右键槽位——MenuId 是开放 string，插件声明任意字符串即契约（壳零改动）
+    "menus": {
+      "my-cool-plugin.noteContext": [
+        { "command": "my-cool-plugin.openInTab", "group": "navigation" },
+        { "command": "my-cool-plugin.renameNote", "group": "1_edit" },
+        { "command": "my-cool-plugin.deleteNote", "group": "1_edit" },
+      ],
+    },
+
+    // 插件设置——声明即自动出现在 Settings Editor（设置插件是完全不认识本插件的通用渲染器）
+    "configuration": {
+      "title": "便签板",
+      "properties": {
+        "my-cool-plugin.defaultPriority": {
+          "type": "number",
+          "default": 50,
+          "description": "新建便签的默认优先级（0–100）。",
+        },
+        "my-cool-plugin.hideCompleted": {
+          "type": "boolean",
+          "default": false,
+          "description": "侧栏列表隐藏已完成便签。",
+        },
+        "my-cool-plugin.pinnedTitles": {
+          "type": "array",
+          "default": [],
+          "description": "置顶便签标题——命中的便签排在最前并带📌标记。",
+          "uiHint": "stringList", // Settings Editor 用 StringListEditor 渲染（@linkdesk/ui 通用控件）
+        },
+      },
+    },
+
+    // 侧栏容器——图标栏点击打开的就是它
+    "viewsContainers": {
+      "my-cool-plugin-sidebar": {
+        "title": "便签板",
+        "location": "sidebar",
+        "hideIfEmpty": false,
+        "mergeHeaderWhenSingle": true, // 单视图时容器 header 即视图 header，titleActions 也在这渲染
+      },
+    },
+    "views": {
+      "my-cool-plugin-sidebar": [
+        {
+          "id": "notes",
+          "title": "", // 空串 = 不渲染折叠头，内容直接铺满
+          "render": "src/views/NotesView.tsx",
+          "order": 0,
+          // 视图动作区——随视图走（视图被拖到别处，动作区跟着走）
+          "titleActions": [
+            {
+              "type": "split",
+              "id": "new-note",
+              "command": "my-cool-plugin.newNote",
+              "icon": "codicon-add",
+              "title": "新建便签",
+              "items": [
+                { "label": "新建便签", "command": "my-cool-plugin.newNote" },
+                { "label": "清理已完成便签", "command": "my-cool-plugin.clearDone" },
+              ],
+            },
+            {
+              "type": "icon",
+              "id": "open-tab",
+              "command": "my-cool-plugin.openInTab",
+              "icon": "codicon-link-external",
+              "title": "在标签页中打开",
+            },
+          ],
+        },
+      ],
+    },
+  },
+}

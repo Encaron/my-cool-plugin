@@ -1,0 +1,5 @@
+node_modules/
+dist/
+*.linkdesk-plugin
+package.json.wrong-linkdesk-root.bak
+.vite/

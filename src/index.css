@@ -1,0 +1,376 @@
+/* 便签板样式——两侧表面共用一份（SDK 打包时各表面 css 合并进 index.bundle.css，
+   由壳 loader 激活插件时 <link> 注入 / 卸载移除）。
+
+   纪律（05-插件UI写法规约）：
+     · 颜色 / 表面 / 圆角一律走 var(--*)，换主题 / 玻璃 / 全局缩放自动跟随，禁硬编码 hex
+     · 字号一律走 var(--font-size-*)，禁裸 px（check-font-scale 门禁）
+     · padding / margin / gap 落在 4px 节奏刻度上（check-spacing-grid 门禁；≤6px 微调豁免）
+     · 便签纸的底色由数据驱动（JS 内联 style），不走 CSS——那是内容色板，见 board.ts */
+
+/* ─────────── 侧栏视图 ─────────── */
+
+.mcp-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  color: var(--text-primary);
+}
+
+.mcp-search {
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.mcp-search__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-sm);
+  outline: none;
+}
+
+.mcp-search__input:focus {
+  border-color: var(--accent);
+}
+
+.mcp-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.mcp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.mcp-item:hover {
+  background: var(--bg-card);
+}
+
+.mcp-item.is-active {
+  background: var(--bg-selection);
+}
+
+.mcp-item__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 4px;
+  border-radius: var(--radius-full);
+}
+
+.mcp-item__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mcp-item__title {
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mcp-item__title.is-done {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.mcp-item__snippet {
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mcp-item__marks {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-2xs);
+}
+
+.mcp-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 12px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.mcp-foot__count {
+  font-variant-numeric: tabular-nums;
+}
+
+.mcp-linkbtn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+}
+
+.mcp-linkbtn:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.mcp-empty {
+  padding: 16px;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+}
+
+/* ─────────── 主区标签页 ─────────── */
+
+.mcp-tab {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--bg-window);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+}
+
+.mcp-tab__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-toolbar);
+}
+
+.mcp-tab__brand {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+}
+
+.mcp-tab__stat {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.mcp-tab__spacer {
+  flex: 1;
+}
+
+.mcp-tab__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.mcp-board {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: 16px;
+}
+
+.mcp-board__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.mcp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 132px;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.mcp-card.is-active {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+}
+
+.mcp-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.mcp-card__title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.mcp-card__title.is-done {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.mcp-card__pin {
+  font-size: var(--font-size-sm);
+}
+
+.mcp-card__body {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.mcp-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: var(--font-size-2xs);
+  opacity: 0.75;
+}
+
+.mcp-editor {
+  flex: none;
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  overflow-y: auto;
+  border-left: 1px solid var(--border);
+  background: var(--bg-side-panel);
+}
+
+.mcp-editor__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mcp-editor__dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+}
+
+.mcp-editor__name {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mcp-input,
+.mcp-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-sm);
+  outline: none;
+}
+
+.mcp-input:focus,
+.mcp-textarea:focus {
+  border-color: var(--accent);
+}
+
+.mcp-textarea {
+  flex: 1;
+  min-height: 160px;
+  resize: vertical;
+  font-family: var(--font-mono);
+  line-height: 1.6;
+}
+
+.mcp-editor__form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mcp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mcp-swatches {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mcp-swatch {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.mcp-swatch.is-active {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* 自定义颜色——斜向渐变示意「取色器」，颜色本身是控件语义不是内容色，故走 token */
+.mcp-swatch--custom {
+  background: linear-gradient(135deg, var(--bg-input) 45%, var(--accent) 45%, var(--accent) 55%, var(--bg-input) 55%);
+}
+
+.mcp-editor__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.mcp-editor__time {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+}
