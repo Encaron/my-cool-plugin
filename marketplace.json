@@ -1,0 +1,26 @@
+{
+  "version": "1",
+  "updatedAt": "2026-09-14T09:57:36.376Z",
+  "plugins": [
+    {
+      "id": "my-cool-plugin",
+      "name": "My Cool Plugin",
+      "version": "0.1.1",
+      "description": "便签板——侧栏列表 + 主区标签页双表面，用 @linkdesk/ui 控件与 window.linkdesk.* API 搭的便签应用。",
+      "author": {
+        "name": "fengyili"
+      },
+      "icon": "resources/icon.svg",
+      "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.1/my-cool-plugin.linkdesk-plugin",
+      "size": 39119,
+      "publishedAt": "2026-09-14T09:57:36.376Z",
+      "versions": [
+        {
+          "version": "0.1.1",
+          "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.1/my-cool-plugin.linkdesk-plugin",
+          "publishedAt": "2026-09-14T09:57:36.376Z"
+        }
+      ]
+    }
+  ]
+}
