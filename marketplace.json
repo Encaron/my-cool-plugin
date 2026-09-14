@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "updatedAt": "2026-09-14T18:21:30.687Z",
+  "updatedAt": "2026-09-14T18:21:56.932Z",
   "plugins": [
     {
       "id": "my-cool-plugin",
@@ -17,12 +17,12 @@
       "readmeUrl": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.2/README.md",
       "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.2/my-cool-plugin.linkdesk-plugin",
       "size": 41059,
-      "publishedAt": "2026-09-14T18:21:30.687Z",
+      "publishedAt": "2026-09-14T18:21:56.932Z",
       "versions": [
         {
           "version": "0.1.2",
           "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.2/my-cool-plugin.linkdesk-plugin",
-          "publishedAt": "2026-09-14T18:21:30.687Z",
+          "publishedAt": "2026-09-14T18:21:56.932Z",
           "changelog": "- 补 **市场身份图（Type-2 彩色身份图）** `resources/icon-brand.svg`，并在 `plugin.json` 用 `marketIcon` 声明 —— 本插件是**图标栏插件**：`icon`（`resources/icon.svg`）是 24×24 `currentColor` 线稿，按三图模型那是 **Type-1（只给图标栏）**；市场侧栏行 / 详情顶要的 Type-2 一直缺着，于是市场里显的是**统一默认彩块**\n- 意象「一叠便签」：两张错位的便签纸（后纸只沿左上露一道边）+ 前纸右下折角 + 三行手写行；金 → 琥珀渐变底，与官方插件同一套家族 DNA（135° 双档渐变 + 白玻璃罩 + 发丝光边）\n- `@linkdesk/plugin-sdk` 升到 0.1.19（^0.1.6 → ^0.1.19）——0.1.16 之前的 `publish` 没有 E6#106 的**身份图 URL 化**：包内相对路径写进目录条目后，**未装用户看到的图标恒 404**；同版还把打包排除表补齐（不再把 `marketplace.json` / `scripts/ci-verify.mjs` 这类仓库面文件装进 zip）\n- 无功能变化：便签板本身一行没改"
         },
         {
