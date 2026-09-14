@@ -1,5 +1,10 @@
 # 更新日志
 
+## v0.1.3（2026-09-15）
+
+- 补 **MIT LICENSE** 并随包分发 —— 本仓此前没有许可证文件；MIT 要求「副本里带声明」，而 zip 才是用户真正拿到的那份。版权行与另外 19 只仓一致（`Copyright (c) 2026 Encaron`）
+- 无功能变化：便签板一行没改
+
 ## v0.1.2（2026-09-15）
 
 - 补 **市场身份图（Type-2 彩色身份图）** `resources/icon-brand.svg`，并在 `plugin.json` 用 `marketIcon` 声明 —— 本插件是**图标栏插件**：`icon`（`resources/icon.svg`）是 24×24 `currentColor` 线稿，按三图模型那是 **Type-1（只给图标栏）**；市场侧栏行 / 详情顶要的 Type-2 一直缺着，于是市场里显的是**统一默认彩块**
