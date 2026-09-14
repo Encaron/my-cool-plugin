@@ -15,10 +15,12 @@
   // ── 插件身份 ──
   "pluginId": "my-cool-plugin", // 全局唯一 ID（kebab-case）——安装目录 / 寻址 / 命令前缀都按它
   "name": "My Cool Plugin", // 显示名——标签页 / 插件详情等 UI 出现处
-  "version": "0.1.1", // 语义化版本 x.y.z——发布更新比较靠它，改了要 +1
+  "version": "0.1.2", // 语义化版本 x.y.z——发布更新比较靠它，改了要 +1
   "description": "便签板——侧栏列表 + 主区标签页双表面，用 @linkdesk/ui 控件与 window.linkdesk.* API 搭的便签应用。",
   "author": "fengyili",
   "icon": "resources/icon.svg", // 相对插件根的 SVG，fill="currentColor" 自动跟随主题
+  // 市场身份图（Type-2 彩色身份图）——市场侧栏行 + 详情顶显这张；上面的 icon 是 24×24 currentColor 线稿，按三图模型只给图标栏用
+  "marketIcon": "resources/icon-brand.svg",
 
   // ── 入口 —— 标签页渲染 src/index.tsx 的 default 导出 ──
   "entry": "src/index.tsx",

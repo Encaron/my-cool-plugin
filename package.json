@@ -1,6 +1,6 @@
 {
   "name": "my-cool-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,7 +16,7 @@
     "@linkdesk/ui": "^0.1.2"
   },
   "devDependencies": {
-    "@linkdesk/plugin-sdk": "^0.1.0",
+    "@linkdesk/plugin-sdk": "^0.1.19",
     "@types/react": "^18.3.12",
     "jsonc-parser": "^3.3.1",
     "typescript": "^5.6.3"
