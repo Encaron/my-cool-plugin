@@ -1,24 +1,30 @@
 {
   "version": "1",
-  "updatedAt": "2026-09-14T18:21:56.932Z",
+  "updatedAt": "2026-09-14T23:16:26.995Z",
   "plugins": [
     {
       "id": "my-cool-plugin",
       "name": "My Cool Plugin",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "description": "便签板——侧栏列表 + 主区标签页双表面，用 @linkdesk/ui 控件与 window.linkdesk.* API 搭的便签应用。",
       "author": {
         "name": "fengyili"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.2/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.3/resources/icon.svg",
       "iconSource": "url",
-      "marketIcon": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.2/resources/icon-brand.svg",
+      "marketIcon": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.3/resources/icon-brand.svg",
       "marketIconSource": "url",
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.2/README.md",
-      "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.2/my-cool-plugin.linkdesk-plugin",
-      "size": 41059,
-      "publishedAt": "2026-09-14T18:21:56.932Z",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.3/README.md",
+      "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.3/my-cool-plugin.linkdesk-plugin",
+      "size": 41925,
+      "publishedAt": "2026-09-14T23:16:26.995Z",
       "versions": [
+        {
+          "version": "0.1.3",
+          "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.3/my-cool-plugin.linkdesk-plugin",
+          "publishedAt": "2026-09-14T23:16:26.995Z",
+          "changelog": "- 补 **MIT LICENSE** 并随包分发 —— 本仓此前没有许可证文件；MIT 要求「副本里带声明」，而 zip 才是用户真正拿到的那份。版权行与另外 19 只仓一致（`Copyright (c) 2026 Encaron`）\n- 无功能变化：便签板一行没改"
+        },
         {
           "version": "0.1.2",
           "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.2/my-cool-plugin.linkdesk-plugin",
