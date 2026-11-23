@@ -1,24 +1,30 @@
 {
   "version": "1",
-  "updatedAt": "2026-09-14T23:16:26.995Z",
+  "updatedAt": "2026-11-23T06:33:36.978Z",
   "plugins": [
     {
       "id": "my-cool-plugin",
       "name": "My Cool Plugin",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "description": "便签板——侧栏列表 + 主区标签页双表面，用 @linkdesk/ui 控件与 window.linkdesk.* API 搭的便签应用。",
       "author": {
         "name": "fengyili"
       },
-      "icon": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.3/resources/icon.svg",
+      "icon": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.4/resources/icon.svg",
       "iconSource": "url",
-      "marketIcon": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.3/resources/icon-brand.svg",
+      "marketIcon": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.4/resources/icon-brand.svg",
       "marketIconSource": "url",
-      "readmeUrl": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.3/README.md",
-      "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.3/my-cool-plugin.linkdesk-plugin",
-      "size": 41925,
-      "publishedAt": "2026-09-14T23:16:26.995Z",
+      "readmeUrl": "https://raw.githubusercontent.com/Encaron/my-cool-plugin/v0.1.4/README.md",
+      "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.4/my-cool-plugin.linkdesk-plugin",
+      "size": 17397,
+      "publishedAt": "2026-11-23T06:33:36.978Z",
       "versions": [
+        {
+          "version": "0.1.4",
+          "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.4/my-cool-plugin.linkdesk-plugin",
+          "publishedAt": "2026-11-23T06:33:36.978Z",
+          "changelog": "依赖追新：共享控件改为壳运行时供给（不再把 ColorPicker/NumberInput 打进插件）；要求 LinkDesk 0.2.60+。"
+        },
         {
           "version": "0.1.3",
           "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.3/my-cool-plugin.linkdesk-plugin",
@@ -36,7 +42,8 @@
           "downloadUrl": "https://github.com/Encaron/my-cool-plugin/releases/download/v0.1.1/my-cool-plugin.linkdesk-plugin",
           "publishedAt": "2026-09-14T09:57:36.376Z"
         }
-      ]
+      ],
+      "minAppVersion": "0.2.60"
     }
   ]
 }
